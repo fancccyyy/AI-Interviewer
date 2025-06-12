@@ -4,7 +4,7 @@ This is a simple AI interviewer that conducts AI behavioral interviews by voice,
 ## Frameworks and AI Model
 1. Backend using `Python` + `Fastapi`, frontend using `React` + `AntDesign`. Special thanks to these brilliant open source projects.
 2. AI agents and AI speech-to-text using [阿里云的大模型服务平台百炼](https://bailian.console.aliyun.com/?tab=doc#/doc)
-3. The AI model behind is qwen-plus-2025-04-28-128K, part of Qwen3 Series
+3. The AI model behind is `qwen-plus-2025-04-28-128K`, part of Qwen3 Series
 
 ## Features
 1. The process is broken into four parts: Initial greeting -> Ask a given question -> Probe further based on QA -> Switch to another given question, thus 4 agents are created and working separately, so each model can better focus on its own job
