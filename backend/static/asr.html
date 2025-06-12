@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>语音识别 - PCM 音频流</title>
+  <style>
+    #result {
+        margin-top: 20px;
+        white-space: pre-wrap;
+        border: 1px solid #ccc;
+        padding: 10px;
+        min-height: 100px;
+    }
+    .temp {
+        color: gray; /* 中间结果为灰色 */
+    }
+</style>
+</head>
+
+<body>
+  <h2>录制麦克风并发送 PCM 音频流</h2>
+  <button id="start">开始录音</button>
+  <button id="stop">停止录音</button>
+  <div id="result"></div>
+
+  <script>
+    let transcriptionElement = document.getElementById('result');
+    let mediaStream;
+    let audioContext;
+    let processor;
+    let ws;
+
+    document.getElementById('start').onclick = async () => {
+      // 请求麦克风权限
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // 创建音频上下文
+      audioContext = new window.AudioContext({ sampleRate: 16000 });
+      const source = audioContext.createMediaStreamSource(mediaStream);
+
+      // 创建 ScriptProcessorNode 来采集 PCM 数据
+      // bufferSize: 缓冲区大小（512 ~ 16384），channels: 输入通道数
+      const bufferSize = 4096;
+      const channels = 1; // 单声道
+      processor = audioContext.createScriptProcessor(bufferSize, channels, channels);
+      source.connect(processor);
+      processor.connect(audioContext.destination);
+
+      // WebSocket 连接
+      const uuid = crypto.randomUUID();
+      ws = new WebSocket(`ws://localhost:8000/ws/asr/${uuid}`);
+
+      ws.onopen = () => {
+        console.log('连接 FastAPI 成功');
+      };
+
+      // 接收识别结果
+      ws.onmessage = (event) => {
+        const result = JSON.parse(event.data);
+        if (result.text) {
+            // 移除当前行的临时文本（最后一句）
+            transcriptionElement.innerHTML = transcriptionElement.innerHTML.replace(/<span class="temp">[^\n]*<\/span>$/, '');
+            if (result.is_end) {
+                // 最终句子，黑色显示并换行
+                transcriptionElement.innerHTML += `<span>${result.text}</span>`;
+            } else {
+                // 中间结果，灰色显示
+                transcriptionElement.innerHTML += `<span class="temp">${result.text}</span>`;
+            }
+        }
+      };
+
+      // 每次音频处理事件触发时获取 PCM 数据
+      processor.onaudioprocess = function (e) {
+        const inputBuffer = e.inputBuffer;
+        const inputData = inputBuffer.getChannelData(0); // 获取单声道数据
+        const pcmData = new Int16Array(inputData.length);
+        for (let i = 0; i < inputData.length; i++) {
+          pcmData[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32767));
+        }
+        ws.send(pcmData.buffer);
+      };
+    };
+
+    document.getElementById('stop').onclick = () => {
+      if (processor) {
+        processor.disconnect();
+        processor = null;
+      }
+
+      if (audioContext) {
+        audioContext.close();
+        audioContext = null;
+      }
+
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+
+      if (ws) {
+        ws.close();
+        ws = null;
+      }
+
+      console.log('录音已停止');
+    };
+  </script>
+</body>
+
+</html>
