@@ -1,0 +1,27 @@
+@keyframes blink-caret {
+  from, to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 确保 ReactMarkdown 渲染的段落是行内显示 */
+.ant-typography p {
+  display: inline;
+  margin: 0;
+}
+
+/* 如果 ReactMarkdown 渲染其他块级元素，也需要类似处理 */
+.ant-typography ul,
+.ant-typography ol {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ant-typography li {
+  display: inline;
+}
