@@ -6,12 +6,13 @@ A demo is avaliable at [here](https://demo.mmyz.xyz/). Note that the server is i
 1. The process is broken into four parts: **Initial greeting** -> **Ask a given question** -> **Probe further based on QA** -> **Switch to another given question**, thus 4 agents are created and working separately, so each model can better focus on its own job.
 2. You can change the number of given questions however you like.
 3. A not-so-bad UI design, at least I believe it is.
-4. Speech-to-text is AI powered, with high quailty and auto punctuation
-5. You can change the tone for AI interviewr whenever you wish.
-6. Backend only exposes `start` and `next-question` 2 API, so the interviee can never guess how the process is conducted.
-7. By the end of the interview process, you'll get a result page for sharing and reviewing.
-8. User input is purified, so do not attempt to XSS it.
-9. More you can explore by yourself😎
+4. Full mobile device compatibility, so try it on the phone📱
+5. Speech-to-text is AI powered, with high quailty and auto punctuation
+6. You can change the tone for AI interviewr whenever you wish.
+7. Backend only exposes `start` and `next-question` 2 API, so the interviee can never guess how the process is conducted.
+8. By the end of the interview process, you'll get a result page for sharing and reviewing.
+9. User input is purified, so do not attempt to XSS it.
+10. More you can explore by yourself😎
 
 ## Frameworks and AI Model
 1. Backend using `Python` + `Fastapi`, frontend using `React` + `AntDesign`. Special thanks to these brilliant open source projects.
