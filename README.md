@@ -3,13 +3,15 @@ This is a simple AI interviewer that conducts AI behavioral interviews by voice,
 A demo is avaliable at [here](https://demo.mmyz.xyz/). Note that the server is in Singapore, so may be slow for Chinese Mainland users. Also laggging for AI services are high since they are mainly for Chinese Mainland users.
 
 ## Features
-1. The process is broken into four parts: Initial greeting -> Ask a given question -> Probe further based on QA -> Switch to another given question, thus 4 agents are created and working separately, so each model can better focus on its own job
-2. A not-so-bad UI design, at least I believe it is.
-3. Speech-to-text is AI powered, with high quailty and auto punctuation
-4. You can change the tone for AI interviewr whenever you wish.
-5. By the end of the interview process, you'll get a result page for sharing and reviewing.
-6. User input is purified, so do not attempt to XSS it.
-7. More you can explore by yourself😎
+1. The process is broken into four parts: **Initial greeting** -> **Ask a given question** -> **Probe further based on QA** -> **Switch to another given question**, thus 4 agents are created and working separately, so each model can better focus on its own job.
+2. You can change the number of given questions however you like.
+3. A not-so-bad UI design, at least I believe it is.
+4. Speech-to-text is AI powered, with high quailty and auto punctuation
+5. You can change the tone for AI interviewr whenever you wish.
+6. Backend only exposes `start` and `next-question` 2 API, so the interviee can never guess how the process is conducted.
+7. By the end of the interview process, you'll get a result page for sharing and reviewing.
+8. User input is purified, so do not attempt to XSS it.
+9. More you can explore by yourself😎
 
 ## Frameworks and AI Model
 1. Backend using `Python` + `Fastapi`, frontend using `React` + `AntDesign`. Special thanks to these brilliant open source projects.
